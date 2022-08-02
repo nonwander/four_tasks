@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """This module consits of File Name tasks.
 """
+from itertools import groupby
+
 from typing import Any
 
 
@@ -13,7 +15,7 @@ def get_list() -> list[str]:
     pass
 
 
-def vatidate(input_list: list[str]) -> list[str]:
+def validate(input_list: list[str]) -> list[str]:
     """Compiles a new list of valid names.
     A filename is considered valid if there are no identical characters
     duplicated in a row in it.
@@ -21,7 +23,11 @@ def vatidate(input_list: list[str]) -> list[str]:
     Returns:
         output_list -- list without unvalid names.
     """
-    pass
+    output_list = []
+    for name in input_list:
+        string = ''.join(char for char, _ in groupby(name))
+        output_list.append(string)
+    return output_list
 
 
 def get_maxlen_name(input_list: list[str]) -> int:
@@ -31,7 +37,8 @@ def get_maxlen_name(input_list: list[str]) -> int:
     Returns:
         max_len -- the maximal item length in list.
     """
-    pass
+    max_len: int = len(max(input_list, key=len))
+    return max_len
 
 
 def change_filenames(input_list: list[str], max_len: int) -> list[str]:
@@ -45,13 +52,17 @@ def change_filenames(input_list: list[str], max_len: int) -> list[str]:
     Returns:
         output_list -- list of filenames with correct length.
     """
-    pass
-
+    output_list = []
+    for name in input_list:
+        string = f'{name:_<{max_len}}'
+        output_list.append(string)
+    return output_list
+    
 
 def main() -> None:
     """The execution point for the program file."""
     input_list: list[str] = get_list()
-    validated_list = vatidate(input_list)
+    validated_list = validate(input_list)
     maximal_lenght: int = get_maxlen_name(validated_list)
     corrected_list: list[str] = change_filenames(validated_list, validated_list)
 
