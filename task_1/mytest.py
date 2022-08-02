@@ -25,8 +25,14 @@ class TestTechnic2(Technic):
 
 
 def test_class_immutability():
+    zero = Technic('Zero', 0, False)
+    print(zero)
     one = Technic('One', 101, True)
     print(one)
+    two = Technic('Two', 202, True)
+    print(two)
+    assert one < zero, 'Неправильное неравенство <'
+    assert one == two, 'Неправильное равенство ='
     try:
         two = TestTechnic1('Two', 202, False, 1, 2, 3)
     except AttributeError as err:

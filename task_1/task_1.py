@@ -7,6 +7,7 @@ Exceptions:
     AttributeError -- raises when modified attributes and methods
         in Child classes of Technic class.
 """
+from functools import total_ordering
 from typing import Any, Optional
 
 
@@ -21,6 +22,7 @@ class ProtectAttrsMethodsMetaclass(type):
         super().__setattr__(key, value)
 
 
+@total_ordering
 class Technic:
     """The class of any technic product.
     """
@@ -41,6 +43,34 @@ class Technic:
         if __name not in Technic._ALLOWED_ATTRS:
             print(f'ERROR! Attribute "{__name}" is not avalible to create!')
         return super().__setattr__(__name, __value)
+
+    def __eq__(self, other):
+        if self.__validate_type(other):
+            return len(self.title) == len(other.title)
+ 
+    def __lt__(self, other):
+        if self.__validate_type(other):
+            return len(self.title) < len(other.title)
+
+    def __validate_type(self, other) -> bool:
+        """Checks whether instances match the Technic type.
+        Arguments:
+            other -- second instance of Technic type.
+        Raises:
+            TypeError: raises if instance is not of Technic type.
+        Returns:
+            boolean value that depends of validation result.
+        """
+        err_msg: str = 'invalid type of the instance!'
+        try:
+            if isinstance(other, self.__class__):
+                return True
+            else:
+                raise TypeError(err_msg)
+        except TypeError as err:
+            print(f'Error: {err}')
+            return False
+
 
     @classmethod
     def get_cls_attrs(cls):
