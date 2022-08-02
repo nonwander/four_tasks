@@ -64,7 +64,7 @@ def main() -> None:
     input_list: list[str] = get_list()
     validated_list = validate(input_list)
     maximal_lenght: int = get_maxlen_name(validated_list)
-    corrected_list: list[str] = change_filenames(validated_list, validated_list)
+    corrected_list: list[str] = change_filenames(validated_list, maximal_lenght)
 
 
 if __name__ == '__main__':
