@@ -2,6 +2,7 @@
 """This module consits of Service Center tasks.
 """
 from typing import NewType
+from collections import defaultdict
 
 TZERO = NewType('TZERO', list[tuple[str, int, str, int]])
 T1NF = NewType('T1NF', list[dict[str, list[tuple[str, int]]]])
@@ -14,9 +15,19 @@ def optimize(data: TZERO) -> T1NF:
         data -- non-normalized data of the custom TZERO type.
 
     Returns:
-        data in the first normal form - custom T1NF type.
+        optimized data in the first normal form - custom T1NF type.
     """
-    return data
+    keys = [f'{item[2]} {item[3]}' for item in data]
+    values = [(item[0], item[1]) for item in data]
+    def_dict: T1NF = [
+        {key: val} for key, val in zip(keys, values)
+    ]
+    pre_data = defaultdict(list)
+    for obj in def_dict:
+        for key, val in obj.items():
+            pre_data[key].append(val)
+    optimized_data = list({key: pre_data[key]} for key in pre_data)
+    return optimized_data
 
 
 def get_data() -> TZERO:
@@ -34,11 +45,14 @@ def show_optimized_data(data: T1NF) -> None:
     Arguments:
         data -- data in the first normal form - custom T1NF type.
     """
-    print(
-        'Татьяна 89001001010: Ноутбук - 1500; Принтер - 1000; Планшет - 700\n'
-        'Анна 89002002020: Смартфон - 500\n'
-        'Андрей 89003003030: Проектор - 1500; Смартфон - 1000\n'
-    )
+    line = ''
+    for obj in data:
+        for key, value in obj.items():
+            subline = ''
+            for item in value:
+                subline += f'{item[0]} - {item[1]}; '
+            line += f'{key}: {subline[:-2]}\n'
+    print(line)
 
 
 def main() -> None:
