@@ -27,7 +27,7 @@ class Technic:
     """The class of any technic product.
     """
     _PRICE_THRESHOLD: int = 100
-    _CATEGORY: tuple[str, str] = ('cheep', 'expensive')
+    _CATEGORY: tuple[str, str] = ('cheep', 'expensive', 'undefined')
     _ALLOWED_ATTRS: list[str] = ['title', 'price', 'availability']
     _ALLOWED_METHODS: list[str] = ['get_cls_attrs', 'category']
 
@@ -94,14 +94,14 @@ class Technic:
         Arguments:
             particle -- value of cell's elementary particles in integer.
         Returns:
-            None -- if price is not set;
-            category -- 
+            'undefined' -- if price is not set;
+            category -- string type variant of Category.
         """
         if self.price:
             result = self._CATEGORY[1] if self.price > self._PRICE_THRESHOLD else self._CATEGORY[0]
             return result
         else:
-            return None
+            return self._CATEGORY[2]
 
     def __str__(self) -> str:
         """Represents a Technic object as its contents.
