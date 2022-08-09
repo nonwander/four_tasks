@@ -32,11 +32,11 @@ class Technic:
     _ALLOWED_METHODS: list[str] = ['get_cls_attrs', 'category']
 
     def __new__(cls, *attrs):
-        protected_args: list[str] = ([i for i in cls.__dict__.keys() if i[:1] != '_'])
-        for item in protected_args:
-            if item not in cls._ALLOWED_METHODS:
-                raise AttributeError(f'Unavailable to create object with: "{item}"!')
-
+        err_message = 'Unavailable to create object with method:'
+        pulled_methods: list[str] = ([i for i in cls.__dict__.keys() if i[:1] != '_'])
+        not_allowed = list(set(cls._ALLOWED_METHODS) ^ set(pulled_methods))
+        if not_allowed:
+            raise AttributeError(f'{err_message} {", ".join(not_allowed)}!')
         return super().__new__(cls)
 
     def __setattr__(self, __name: str, __value: Any) -> None:
