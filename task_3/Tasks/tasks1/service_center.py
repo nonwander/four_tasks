@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """This module consits of Service Center tasks.
 """
-from typing import NewType
+from typing import NewType, Union
 from collections import defaultdict
 
 TZERO = NewType('TZERO', list[tuple[str, int, str, int]])
@@ -19,14 +19,10 @@ def optimize(data: TZERO) -> T1NF:
     """
     keys = [f'{item[2]} {item[3]}' for item in data]
     values = [(item[0], item[1]) for item in data]
-    def_dict: T1NF = [
-        {key: val} for key, val in zip(keys, values)
-    ]
     pre_data = defaultdict(list)
-    for obj in def_dict:
-        for key, val in obj.items():
-            pre_data[key].append(val)
-    optimized_data = list({key: pre_data[key]} for key in pre_data)
+    optimized_data = [
+        {key: pre_data[key]} for key in {key: pre_data[key].append(val) for key, val in zip(keys, values)}
+    ]
     return optimized_data
 
 
@@ -45,14 +41,29 @@ def show_optimized_data(data: T1NF) -> None:
     Arguments:
         data -- data in the first normal form - custom T1NF type.
     """
-    line = ''
-    for obj in data:
-        for key, value in obj.items():
-            subline = ''
-            for item in value:
-                subline += f'{item[0]} - {item[1]}; '
-            line += f'{key}: {subline[:-2]}\n'
-    print(line)
+    def formatter(object: Union[list, dict, tuple, int, str]) -> str:
+        if type(object) is dict:
+            items: list[str] = [
+                str(key) + ': ' + formatter(object[key])
+                for key in object
+            ]
+            return f'{"".join(items)[:-2]}\n'
+        elif type(object) is list:
+            items: list[str] = [
+                formatter(item)
+                for item in object
+            ]
+            return f'{"".join(items)}'
+        elif type(object) is tuple:
+            items: list[str] = [
+                formatter(item)
+                for item in object
+            ]
+            return f'{" - ".join(items)}; '
+        else:
+            return str(object)
+
+    print(formatter(data))
 
 
 def main() -> None:

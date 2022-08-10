@@ -3,8 +3,6 @@
 """
 from itertools import groupby
 
-from typing import Any
-
 
 def get_list() -> list[str]:
     """Loads list of filenames in a certain way.
@@ -23,10 +21,9 @@ def validate(input_list: list[str]) -> list[str]:
     Returns:
         output_list -- list without unvalid names.
     """
-    output_list = []
-    for name in input_list:
-        string = ''.join(char for char, _ in groupby(name))
-        output_list.append(string)
+    output_list = [
+        ''.join(char for char, _ in groupby(name)) for name in input_list
+    ]
     return output_list
 
 
@@ -52,10 +49,7 @@ def change_filenames(input_list: list[str], max_len: int) -> list[str]:
     Returns:
         output_list -- list of filenames with correct length.
     """
-    output_list = []
-    for name in input_list:
-        string = f'{name:_<{max_len}}'
-        output_list.append(string)
+    output_list = [f'{name:_<{max_len}}' for name in input_list]
     return output_list
     
 
