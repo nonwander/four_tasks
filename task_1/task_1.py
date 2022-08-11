@@ -33,7 +33,9 @@ class Technic:
 
     def __new__(cls, *attrs):
         err_message = 'Unavailable to create object with method:'
-        pulled_methods: list[str] = ([i for i in cls.__dict__.keys() if i[:1] != '_'])
+        pulled_methods: list[str] = (
+            [i for i in cls.__dict__.keys() if i[:1] != '_']
+        )
         not_allowed = list(set(cls._ALLOWED_METHODS) ^ set(pulled_methods))
         if not_allowed:
             raise AttributeError(f'{err_message} {", ".join(not_allowed)}!')
@@ -47,7 +49,7 @@ class Technic:
     def __eq__(self, other):
         if self.__validate_type(other):
             return len(self.title) == len(other.title)
- 
+
     def __lt__(self, other):
         if self.__validate_type(other):
             return len(self.title) < len(other.title)
@@ -70,7 +72,6 @@ class Technic:
         except TypeError as err:
             print(f'Error: {err}')
             return False
-
 
     @classmethod
     def get_cls_attrs(cls):
@@ -98,7 +99,9 @@ class Technic:
             category -- string type variant of Category.
         """
         if self.price:
-            result = self._CATEGORY[1] if self.price > self._PRICE_THRESHOLD else self._CATEGORY[0]
+            result = self._CATEGORY[1] if (
+                self.price > self._PRICE_THRESHOLD
+            ) else self._CATEGORY[0]
             return result
         else:
             return self._CATEGORY[2]
