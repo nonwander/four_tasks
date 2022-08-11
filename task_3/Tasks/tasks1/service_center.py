@@ -21,7 +21,8 @@ def optimize(data: TZERO) -> T1NF:
     values = [(item[0], item[1]) for item in data]
     pre_data = defaultdict(list)
     optimized_data = [
-        {key: pre_data[key]} for key in {key: pre_data[key].append(val) for key, val in zip(keys, values)}
+        {key: pre_data[key]} for key in
+        {key: pre_data[key].append(val) for key, val in zip(keys, values)}
     ]
     return optimized_data
 

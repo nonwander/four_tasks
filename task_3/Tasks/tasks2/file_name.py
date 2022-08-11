@@ -51,14 +51,16 @@ def change_filenames(input_list: list[str], max_len: int) -> list[str]:
     """
     output_list = [f'{name:_<{max_len}}' for name in input_list]
     return output_list
-    
+
 
 def main() -> None:
     """The execution point for the program file."""
     input_list: list[str] = get_list()
     validated_list = validate(input_list)
     maximal_lenght: int = get_maxlen_name(validated_list)
-    corrected_list: list[str] = change_filenames(validated_list, maximal_lenght)
+    corrected_list: list[str] = change_filenames(
+        validated_list, maximal_lenght
+    )
 
 
 if __name__ == '__main__':
